@@ -96,10 +96,9 @@ FILES & STRUCTURE
 │   ├── modeling.py            # Trains model  
 │   ├── evaluate_model.py      # Model evaluation/report  
 │   ├── utils.py               # Shared cleaning functions  
-│   └── log_info.py            # Logs training arguments and metadata  
 ├── main.py                    # Pipeline runner (with --fast support)  
 ├── api.py                     # REST API using FastAPI  
-├── requirements.txt           # Lightweight dependencies (Docker)  
+├── requirements-api.txt       # Lightweight dependencies (Docker)  
 ├── requirements-dev.txt       # Full dependencies for training/evaluation  
 ├── Dockerfile                 # Image definition  
 ├── docker-compose.yml         # Full-stack launcher (API)  
