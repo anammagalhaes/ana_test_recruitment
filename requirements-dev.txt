@@ -1,0 +1,29 @@
+# Manipulação de dados
+pandas==2.2.2
+numpy==1.26.4
+matplotlib
+
+
+# Pré-processamento e limpeza de texto
+regex==2024.5.15
+unidecode==1.3.8
+
+# Modelagem NLP com HuggingFace
+transformers==4.41.1
+datasets==2.19.1
+accelerate==1.8.1
+torch==2.3.0
+
+# Avaliação e ML tradicional
+scikit-learn==1.4.2
+
+# Dependências para rodar o app Streamlit e API com o modelo DistilBERT
+
+transformers==4.41.1
+torch>=2.0.0
+streamlit>=1.30.0
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+scikit-learn>=1.4.0
+pydantic>=2.6.0
+numpy>=1.24.0
