@@ -6,11 +6,12 @@ ENV PYTHONUNBUFFERED=1
 # Define diretório de trabalho
 WORKDIR /app
 
-# Atualiza pacotes e instala Git 
+# Atualiza pacotes e instala Git
 RUN apt-get update && apt-get install -y git
 
-# Copia todos os arquivos para o container
+# Copia todos os arquivos para o container, incluindo o modelo treinado
 COPY . /app
+COPY modelo_distilbert/ /app/modelo_distilbert/
 
 # Atualiza pip e instala dependências da API
 RUN pip install --upgrade pip

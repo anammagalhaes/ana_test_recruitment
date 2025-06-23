@@ -2,11 +2,38 @@ NLP Movie Classifier
 ==========================
 
 A production-grade NLP pipeline that classifies movie synopses into one of three tags:
-  - cult
-  - dramatic
-  - paranormal
+- cult  
+- dramatic  
+- paranormal  
 
 --------------------------
+RUNNING VIA DOCKER (RECOMMENDED)
+--------------------------
+**1. Prerequisites**  
+- Docker and Docker Compose installed  
+- Folder `modelo_distilbert/` (with the trained model) must be in project root  
+
+**2. Build the image:**
+
+```bash
+docker compose build --no-cache
+```
+
+**3. Start the API server:**
+
+```bash
+docker compose up
+```
+
+Access the API docs via Swagger UI at:  
+http://localhost:8000/docs  
+
+You can test:
+- `/predict`: Send JSON with a synopsis  
+- `/predict_file`: Upload a `.txt` file  
+
+---
+
 FEATURES
 --------------------------
 - End-to-end transformer-based pipeline (DistilBERT)
@@ -22,87 +49,91 @@ FAST MODE vs FULL MODE
 --------------------------
 You can run the system in two ways:
 
-FAST MODE (`--fast`)
-  - Developed for testing in CPU-only environments
-  - Uses a reduced dataset sample
-  - Trains for fewer steps (max_steps=50)
-  - Small batch size and only 1 epoch
-  - Useful for debugging or validating pipeline behavior without heavy compute
+**FAST MODE (`--fast`)**
+- Developed for testing in CPU-only environments
+- Uses a reduced dataset sample
+- Trains for fewer steps (max_steps=50)
+- Small batch size and only 1 epoch
+- Useful for debugging or validating pipeline behavior without heavy compute
 
-FULL MODE (default)
-  - Uses full dataset
-  - Full training regime with validation
-  - Recommended for actual model deployment
+**FULL MODE (default)**
+- Uses full dataset
+- Full training regime with validation
+- Recommended for actual model deployment
 
 --------------------------
 HOW TO RUN (LOCALLY)
 --------------------------
 1. Create virtual environment and install dev dependencies:
-   python -m venv .venv
-   .venv\Scripts\activate              # Windows
-   source .venv/bin/activate           # Mac/Linux
-   pip install -r requirements-dev.txt
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate              # Windows
+source .venv/bin/activate           # Mac/Linux
+pip install -r requirements-dev.txt
+```
 
 2. Run the full pipeline:
-   python main.py                     # full mode
-   python main.py --fast              # fast/debug mode
 
-3. Run the API server:
-   uvicorn api:app --reload
-   Access API docs at: http://localhost:8000/docs
+```bash
+python main.py                     # full mode
+python main.py --fast              # fast/debug mode
+```
 
---------------------------
-HOW TO RUN (DOCKER)
---------------------------
-To launch everything in production setup:
+3. Run the API server locally:
 
-   docker compose up --build
+```bash
+uvicorn api:app --reload
+```
 
-After build:
-- FastAPI available at http://localhost:8000/docs
+Then open: http://localhost:8000/docs
 
 --------------------------
 FILES & STRUCTURE
 --------------------------
-├── src/
-│   ├── preprocessing.py       # Cleans and splits dataset
-│   ├── modeling.py            # Trains model
-│   ├── evaluate_model.py      # Model evaluation/report
-│   ├── utils.py               # Shared cleaning functions
-│   └── log_info.py            # Logs training arguments and metadata
-├── main.py                    # Pipeline runner (with --fast support)
-├── api.py                     # REST API using FastAPI
-├── requirements.txt           # Lightweight dependencies (Docker)
-├── requirements-dev.txt       # Full dependencies for training/evaluation
-├── Dockerfile                 # Image definition
-├── docker-compose.yml         # Full-stack launcher (API + UI)
-├── modelo_distilbert/         # Saved trained model
-├── results/                   # Evaluation output, checkpoints
-└── data/                      # Cleaned and split CSV files
+├── src/  
+│   ├── preprocessing.py       # Cleans and splits dataset  
+│   ├── modeling.py            # Trains model  
+│   ├── evaluate_model.py      # Model evaluation/report  
+│   ├── utils.py               # Shared cleaning functions  
+│   └── log_info.py            # Logs training arguments and metadata  
+├── main.py                    # Pipeline runner (with --fast support)  
+├── api.py                     # REST API using FastAPI  
+├── requirements.txt           # Lightweight dependencies (Docker)  
+├── requirements-dev.txt       # Full dependencies for training/evaluation  
+├── Dockerfile                 # Image definition  
+├── docker-compose.yml         # Full-stack launcher (API)  
+├── modelo_distilbert/         # Saved trained model  
+├── results/                   # Evaluation output, checkpoints  
+└── data/                      # Cleaned and split CSV files  
 
 --------------------------
 REQUIREMENTS OVERVIEW
 --------------------------
-- requirements.txt:
-    Lightweight for Docker & API usage only
+- `requirements.txt`:  
+  Lightweight, for Docker and API runtime  
 
-- requirements-dev.txt:
-    Includes transformers, datasets, matplotlib, etc.
-    Required for full training/evaluation locally
+- `requirements-dev.txt`:  
+  Full dependencies including: transformers, datasets, matplotlib, etc.  
+  Required for training, EDA, evaluation  
 
 --------------------------
 TESTING THE API
 --------------------------
-After model is trained and API is running:
+Once the model is trained and API is running:
 
-1. POST /predict
-   Payload: { "text": "..." }
+1. **POST /predict**  
+   JSON Payload:  
+   ```json
+   { "text": "A mysterious figure appears in a haunted village..." }
+   ```
 
-2. POST /predict_file
-   Upload .txt file with synopsis text
+2. **POST /predict_file**  
+   Upload `.txt` file with synopsis
+
+Test using: http://localhost:8000/docs  
 
 --------------------------
 AUTHOR
 --------------------------
 Ana Magalhães
-
